@@ -11,5 +11,5 @@ menu "Example configuration"
             bool "BME680_I2C_ADDR_1 (0x77)"
     endchoice
 
-    rsource "../../../../devtools/Kconfig.i2c"
+    rsource "../../../Kconfig.i2c"
 endmenu
