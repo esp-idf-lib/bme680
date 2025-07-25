@@ -11,7 +11,7 @@ Driver for BME680 digital environmental sensor.
 ## Installation
 
 ```sh
-idf.py add-dependency "esp-idf-lib/bme680^1.0.0
+idf.py add-dependency esp-idf-lib/bme680^1.0.0
 ```
 
 ## Support
