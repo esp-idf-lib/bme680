@@ -1,7 +1,7 @@
 ---
 name: bme680
 description: Driver for BME680 digital environmental sensor
-version: 1.0.4
+version: 1.0.5
 groups:
   - pressure
   - humidity
