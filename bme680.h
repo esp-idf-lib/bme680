@@ -86,7 +86,8 @@ typedef struct
 /**
  * Filter size
  */
-typedef enum {
+typedef enum
+{
     BME680_IIR_SIZE_0 = 0, //!< Filter is not used
     BME680_IIR_SIZE_1,
     BME680_IIR_SIZE_3,
@@ -100,7 +101,8 @@ typedef enum {
 /**
  * Oversampling rate
  */
-typedef enum {
+typedef enum
+{
     BME680_OSR_NONE = 0, //!< Measurement is skipped, output values are invalid
     BME680_OSR_1X,       //!< Default oversampling rates
     BME680_OSR_2X,
@@ -355,7 +357,7 @@ esp_err_t bme680_measure_float(bme680_t *dev, bme680_values_float_t *results);
  * @return `ESP_OK` on success
  */
 esp_err_t bme680_set_oversampling_rates(bme680_t *dev, bme680_oversampling_rate_t osr_t,
-        bme680_oversampling_rate_t osr_p, bme680_oversampling_rate_t osr_h);
+                                        bme680_oversampling_rate_t osr_p, bme680_oversampling_rate_t osr_h);
 
 /**
  * @brief   Set the size of the IIR filter

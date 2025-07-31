@@ -331,7 +331,7 @@ static esp_err_t bme680_get_raw_data(bme680_t *dev, bme680_raw_data_t *raw_data)
      * These data are not documented and it is not really clear when they are filled
      */
     ESP_LOGD(TAG, "Raw data: %" PRIu32 " %" PRIu32 " %d %d %d", raw_data->temperature, raw_data->pressure,
-            raw_data->humidity, raw_data->gas_resistance, raw_data->gas_range);
+             raw_data->humidity, raw_data->gas_resistance, raw_data->gas_range);
 
     return ESP_OK;
 }
@@ -396,7 +396,7 @@ static uint32_t bme680_convert_pressure(bme680_t *dev, uint32_t raw_pressure)
     else
         pressure_comp = ((pressure_comp << 1) / var1);
     var1 = ((int32_t)cd->par_p9 * (int32_t)(((pressure_comp >> 3) *
-                                            (pressure_comp >> 3)) >> 13)) >> 12;
+                                             (pressure_comp >> 3)) >> 13)) >> 12;
     var2 = ((int32_t)(pressure_comp >> 2) *
             (int32_t)cd->par_p8) >> 13;
     var3 = ((int32_t)(pressure_comp >> 8) * (int32_t)(pressure_comp >> 8) *
@@ -404,7 +404,7 @@ static uint32_t bme680_convert_pressure(bme680_t *dev, uint32_t raw_pressure)
             (int32_t)cd->par_p10) >> 17;
 
     pressure_comp = (int32_t)(pressure_comp) + ((var1 + var2 + var3 +
-                    ((int32_t)cd->par_p7 << 7)) >> 4);
+                                                 ((int32_t)cd->par_p7 << 7)) >> 4);
 
     return (uint32_t)pressure_comp;
 }
@@ -434,11 +434,11 @@ static uint32_t bme680_convert_humidity(bme680_t *dev, uint16_t raw_humidity)
 
     temp_scaled = (((int32_t) cd->t_fine * 5) + 128) >> 8;
     var1 = (int32_t) (raw_humidity - ((int32_t) ((int32_t) cd->par_h1 << 4)))
-            - (((temp_scaled * (int32_t) cd->par_h3) / ((int32_t) 100)) >> 1);
+           - (((temp_scaled * (int32_t) cd->par_h3) / ((int32_t) 100)) >> 1);
     var2 = ((int32_t) cd->par_h2
             * (((temp_scaled * (int32_t) cd->par_h4) / ((int32_t) 100))
-                    + (((temp_scaled * ((temp_scaled * (int32_t) cd->par_h5) / ((int32_t) 100))) >> 6) / ((int32_t) 100))
-                    + (int32_t) (1 << 14))) >> 10;
+               + (((temp_scaled * ((temp_scaled * (int32_t) cd->par_h5) / ((int32_t) 100))) >> 6) / ((int32_t) 100))
+               + (int32_t) (1 << 14))) >> 10;
     var3 = var1 * var2;
     var4 = (int32_t) cd->par_h6 << 7;
     var4 = ((var4) + ((temp_scaled * (int32_t) cd->par_h7) / ((int32_t) 100))) >> 4;
@@ -458,24 +458,25 @@ static uint32_t bme680_convert_humidity(bme680_t *dev, uint16_t raw_humidity)
  * @brief   Lookup table for gas resitance computation
  * @ref     BME680 datasheet, page 19
  */
-static float lookup_table[16][2] = {
-        // const1, const2       // gas_range
-        { 1.0,   8000000.0 },   // 0
-        { 1.0,   4000000.0 },   // 1
-        { 1.0,   2000000.0 },   // 2
-        { 1.0,   1000000.0 },   // 3
-        { 1.0,   499500.4995 }, // 4
-        { 0.99,  248262.1648 }, // 5
-        { 1.0,   125000.0 },    // 6
-        { 0.992, 63004.03226 }, // 7
-        { 1.0,   31281.28128 }, // 8
-        { 1.0,   15625.0 },     // 9
-        { 0.998, 7812.5 },      // 10
-        { 0.995, 3906.25 },     // 11
-        { 1.0,   1953.125 },    // 12
-        { 0.99,  976.5625 },    // 13
-        { 1.0,   488.28125 },   // 14
-        { 1.0,   244.140625 }   // 15
+static float lookup_table[16][2] =
+{
+    // const1, const2       // gas_range
+    { 1.0,   8000000.0 },   // 0
+    { 1.0,   4000000.0 },   // 1
+    { 1.0,   2000000.0 },   // 2
+    { 1.0,   1000000.0 },   // 3
+    { 1.0,   499500.4995 }, // 4
+    { 0.99,  248262.1648 }, // 5
+    { 1.0,   125000.0 },    // 6
+    { 0.992, 63004.03226 }, // 7
+    { 1.0,   31281.28128 }, // 8
+    { 1.0,   15625.0 },     // 9
+    { 0.998, 7812.5 },      // 10
+    { 0.995, 3906.25 },     // 11
+    { 1.0,   1953.125 },    // 12
+    { 0.99,  976.5625 },    // 13
+    { 1.0,   488.28125 },   // 14
+    { 1.0,   244.140625 }   // 15
 };
 
 /**
@@ -546,7 +547,7 @@ static uint8_t bme680_heater_resistance(const bme680_t *dev, uint16_t temp)
     var4 = var1 * (1.0 + (var2 * (double) temp));
     var5 = var4 + (var3 * (double) dev->settings.ambient_temperature);
     res_heat_x = (uint8_t) (3.4
-            * ((var5 * (4.0 / (4.0 + (double) cd->res_heat_range)) * (1.0 / (1.0 + ((double) cd->res_heat_val * 0.002)))) - 25));
+                            * ((var5 * (4.0 / (4.0 + (double) cd->res_heat_range)) * (1.0 / (1.0 + ((double) cd->res_heat_val * 0.002)))) - 25));
     return res_heat_x;
 
 }
@@ -677,7 +678,7 @@ esp_err_t bme680_force_measurement(bme680_t *dev)
 
     // Set the power mode to forced mode to trigger one TPHG measurement cycle
     CHECK_LOGE(bme680_set_mode(dev, BME680_FORCED_MODE),
-            "Could not set forced mode to start TPHG measurement cycle");
+               "Could not set forced mode to start TPHG measurement cycle");
     dev->meas_started = true;
     dev->meas_status = 0;
 
@@ -790,7 +791,7 @@ esp_err_t bme680_get_results_fixed(bme680_t *dev, bme680_values_fixed_t *results
     }
 
     ESP_LOGD(TAG, "Fixed point sensor values - %d/100 deg.C, %" PRIu32 "/1000 %%, %" PRIu32 " Pa, %" PRIu32 " Ohm",
-            results->temperature, results->humidity, results->pressure, results->gas_resistance);
+             results->temperature, results->humidity, results->pressure, results->gas_resistance);
 
     return ESP_OK;
 }
@@ -847,7 +848,7 @@ esp_err_t bme680_measure_float(bme680_t *dev, bme680_values_float_t *results)
 }
 
 esp_err_t bme680_set_oversampling_rates(bme680_t *dev, bme680_oversampling_rate_t ost,
-        bme680_oversampling_rate_t osp, bme680_oversampling_rate_t osh)
+                                        bme680_oversampling_rate_t osp, bme680_oversampling_rate_t osh)
 {
     CHECK_ARG(dev);
 
@@ -894,7 +895,7 @@ esp_err_t bme680_set_oversampling_rates(bme680_t *dev, bme680_oversampling_rate_
     I2C_DEV_GIVE_MUTEX(&dev->i2c_dev);
 
     ESP_LOGD(TAG, "Setting oversampling rates done: osrt=%d osp=%d osrh=%d",
-            dev->settings.osr_temperature, dev->settings.osr_pressure, dev->settings.osr_humidity);
+             dev->settings.osr_temperature, dev->settings.osr_pressure, dev->settings.osr_humidity);
 
     return ESP_OK;
 }
@@ -954,8 +955,8 @@ esp_err_t bme680_set_heater_profile(bme680_t *dev, uint8_t profile, uint16_t tem
 
 
     ESP_LOGD(TAG, "Setting heater profile %d done: temperature=%d duration=%d"
-            " heater_resistance=%02x heater_duration=%02x", profile, dev->settings.heater_temperature[profile],
-            dev->settings.heater_duration[profile], heat_dur, heat_res);
+                  " heater_resistance=%02x heater_duration=%02x", profile, dev->settings.heater_temperature[profile],
+             dev->settings.heater_duration[profile], heat_dur, heat_res);
 
     return ESP_OK;
 }
@@ -976,7 +977,7 @@ esp_err_t bme680_use_heater_profile(bme680_t *dev, int8_t profile)
 
     // enable or disable gas measurement
     reg = bme_set_reg_bit(reg, BME680_RUN_GAS,
-            (profile != BME680_HEATER_NOT_USED && dev->settings.heater_temperature[profile] && dev->settings.heater_duration[profile]));
+                          (profile != BME680_HEATER_NOT_USED && dev->settings.heater_temperature[profile] && dev->settings.heater_duration[profile]));
 
     I2C_DEV_TAKE_MUTEX(&dev->i2c_dev);
     I2C_DEV_CHECK(&dev->i2c_dev, write_reg_8_nolock(dev, BME680_REG_CTRL_GAS_1, reg));
@@ -999,8 +1000,8 @@ esp_err_t bme680_set_ambient_temperature(bme680_t *dev, int16_t ambient)
     uint8_t data[10];
     for (int i = 0; i < BME680_HEATER_PROFILES; i++)
         data[i] = dev->settings.heater_temperature[i]
-                ? bme680_heater_resistance(dev, dev->settings.heater_temperature[i])
-                : 0;
+                  ? bme680_heater_resistance(dev, dev->settings.heater_temperature[i])
+                  : 0;
 
     I2C_DEV_TAKE_MUTEX(&dev->i2c_dev);
     I2C_DEV_CHECK(&dev->i2c_dev, i2c_dev_write_reg(&dev->i2c_dev, BME680_REG_RES_HEAT_BASE, data, 10));

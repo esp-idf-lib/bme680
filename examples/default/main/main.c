@@ -59,7 +59,7 @@ void bme680_test(void *pvParameters)
             // get the results and do something with them
             if (bme680_get_results_float(&sensor, &values) == ESP_OK)
                 printf("BME680 Sensor: %.2f °C, %.2f %%, %.2f hPa, %.2f Ohm\n",
-                        values.temperature, values.humidity, values.pressure, values.gas_resistance);
+                       values.temperature, values.humidity, values.pressure, values.gas_resistance);
         }
         // passive waiting until 1 second is over
         vTaskDelayUntil(&last_wakeup, pdMS_TO_TICKS(1000));
